@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Tasklist</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                window.location.href = "Inicio_de_sesion.html"; //Si no hay token, redirige al login
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Tasklist</h1>
+        <div class="user-actions">
+            <a href="Crear_notas.html"><button class="login-button">Crear Notas</button></a>
+           <a href="Inicio_de_sesion.html"> <button href="Inicio_de_sesion.html" class="login-button" id="logoutButton">Cerrar Sesión</button> </a>
+        </div>
+    </header>
+
+    <div>
+        <!-- Sección de notas activas -->
+        <section class="notes-section">
+            <h3>Notas Activas</h3>
+            <div id="active-notes">
+                <!-- Notas activas se cargarán aquí -->
+            </div>
+        </section>
+
+    </div>
+        <!-- Sección de notas completadas -->
+        <section class="completed-section">
+            <h3>Notas Completadas</h3>
+            <div id="completed-notes">
+                <!-- Notas completadas se cargarán aquí -->
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const token = localStorage.getItem("token");
+    
+            if (!token) {
+                window.location.href = "Inicio_de_sesion.html";//Redirige al login si no hay sesión activa
+                return;
+            }
+    
+            //Obtener elementos HTML donde se mostrarán las notas
+            const activeNotesContainer = document.getElementById("active-notes");
+            const completedNotesContainer = document.getElementById("completed-notes");
+    
+            try {
+                //Petición a la API para obtener las notas
+                const response = await fetch("http://localhost:5000/api/tasks", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    activeNotesContainer.innerHTML = "";
+                    completedNotesContainer.innerHTML = "";
+    
+                    //Iterar sobre las notas y clasificarlas
+                    data.forEach(task => {
+                        const noteElement = document.createElement("div");
+                        noteElement.classList.add("note-item");
+                        noteElement.innerHTML = `
+                            <h4>${task.title}</h4>
+                            <p>${task.content}</p>
+                            <button id="btn-completed" onclick="markAsCompleted('${task._id}')">Marcar como Completado</button>
+                            <button id="btn-edit" onclick="editTask('${task._id}')">Editar</button>
+                            <button id="btn-delete" onclick="deleteTask('${task._id}')">Eliminar</button>
+                        `;
+    
+                        if (task.completed) {
+                            completedNotesContainer.appendChild(noteElement);
+                        } else {
+                            activeNotesContainer.appendChild(noteElement);
+                        }
+                    });
+                } else {
+                    alert("Error al obtener notas: " + (data.error || "No se pudieron cargar las notas."));
+                }
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+                alert("Error al conectar con el servidor.");
+            }
+        });
+    
+        //Función para marcar una nota como completada
+        async function markAsCompleted(taskId) {
+            const token = localStorage.getItem("token");
+            try {
+                const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ completed: true })
+                });
+    
+                if (response.ok) {
+                    alert("Nota marcada como completada.");
+                    location.reload();//Recargar la página para actualizar las notas
+                } else {
+                    const data = await response.json();
+                    alert("Error: " + data.error);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al conectar con el servidor.");
+            }
+        }
+
+        //funcion para eliminar tarea
+
+        async function deleteTask(taskId){
+            const token = localStorage.getItem("token");
+
+            try{
+                const response = await fetch (`http://localhost:5000/api/tasks/${taskId}`, {
+                    method: "DELETE",
+                    headers:{
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                if (response.ok){
+                    alert("Tarea eliminada.");
+                    location.reload();
+                }
+                else{
+                    const data = await response.json();
+                    alert("Error: " + data.message);
+                }
+            }catch(error){
+                console.error("Error:", error);
+                alert("Error al conectar con el servidor.");
+            }
+        }
+
+        // Función para editar una tarea
+async function editTask(taskId) {
+    const token = localStorage.getItem("token");
+
+    // Crear un formulario de edición
+    const formContainer = document.createElement("div");
+    formContainer.classList.add("form-container");
+    formContainer.innerHTML = `
+        <h3>Editar Tarea</h3>
+        <label for="edit-title">Título:</label>
+        <input type="text" id="edit-title" placeholder="Título de la tarea" />
+        <label for="edit-content">Contenido:</label>
+        <textarea id="edit-content" placeholder="Contenido de la tarea"></textarea>
+        <button onclick="submitEditTask('${taskId}')">Guardar Cambios</button>
+        <button onclick="cancelEdit()">Cancelar</button>
+    `;
+
+    // Mostrar el formulario en el contenedor
+    document.body.appendChild(formContainer);
+
+    // Obtener los datos actuales de la tarea
+    try {
+        const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const task = await response.json();
+        console.log("Datos obtenidos de la tarea:", task);
+        if (response.ok) {
+            // Rellenar el formulario con los datos actuales
+            document.getElementById("edit-title").value = task.title;
+            document.getElementById("edit-content").value = task.content;
+        } else {
+            alert("Error al obtener los datos de la tarea.");
+        }
+    } catch (error) {
+        console.error("Error al obtener la tarea:", error);
+        alert("Error al conectar con el servidor.");
+    }
+}
+
+// Función para enviar los cambios al servidor
+async function submitEditTask(taskId) {
+    const token = localStorage.getItem("token");
+    const title = document.getElementById("edit-title").value;
+    const content = document.getElementById("edit-content").value;
+
+    try {
+        const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ title, content })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert("Tarea editada con éxito.");
+            location.reload(); // Recargar la página para actualizar las tareas
+        } else {
+            alert("Error: " + data.message);
+        }
+    } catch (error) {
+        console.error("Error al editar la tarea:", error);
+        alert("Error al conectar con el servidor.");
+    }
+}
+
+// Función para cancelar la edición y recargar la página
+function cancelEdit() {
+    location.reload(); // Recargar la página
+}
+        
+    //funcion para cerrar sesion activa
+    document.getElementById("logoutButton").addEventListener("click", function() {
+        localStorage.removeItem("token"); //elimina el token del almacenamiento local
+    
+    });
+    </script>
+    
+</body>
+</html>

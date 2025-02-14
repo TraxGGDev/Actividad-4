@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Tasklist</h1>
+        <a href="registro.html"><button class="login-button">Regístrate</button></a>
+    </header>
+    
+    <h2>Iniciar sesión en Tasklist</h2>
+    
+    <div class="container">
+        <div class="image-container">
+            <img src="Imagenes/Foto_Inicio.jpg" alt="Imagen de ejemplo">
+        </div>
+        <div class="form-container">
+            <h2>TASKLIST</h2>
+            <form action="#" method="post" id="initForm">
+                <input type="text" name="username" id="username" placeholder="Tu nombre de usuario" required>
+                <input id="password" type="password" name="PASSWORD" placeholder="Tu contraseña" required>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025. Todos los derechos reservados.</p>
+    </footer>
+    <script>
+        document.getElementById("initForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // no se envia el form automaticamente
+    
+            //obtenemos los datos del form
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+    
+            //Enviamos los datos al servidor
+            try {
+                const response = await fetch("http://localhost:5000/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                //Guarda el token en el localStorage
+                localStorage.setItem("token", data.token); 
+                // Redirige a la página de inicio
+                window.location.href = "inicio.html";
+                } else {
+                    alert("Error: Las credenciales no coinciden");
+                }
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+                alert("Error al conectar con el servidor.");
+            }
+        });
+    </script>
+</body>
+</html>

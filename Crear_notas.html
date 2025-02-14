@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nota - Tasklist</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                window.location.href = "Inicio_de_sesion.html"; //Si no hay token, redirige al login
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Tasklist</h1>
+        <div class="user-actions">
+            <a href="Inicio.html"><button>Volver al Inicio</button></a>
+           <a href="Inicio_de_sesion.html"> <button class="login-button" id="logoutButton">Cerrar Sesión</button></a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Crear Nueva Nota</h2>
+            <form id="note-form">
+                <label for="note-title">Título:</label>
+                <input type="text" id="note-title" name="note-title" placeholder="Título de la nota" required>
+
+                <label for="note-content">Contenido:</label>
+                <textarea id="note-content" name="note-content" placeholder="Escribe el contenido de la nota..." required></textarea>
+
+                <button type="submit">Guardar Nota</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById("note-form").addEventListener("submit", async function(event){
+            event.preventDefault(); //evita que enviemos el formulario automaticamente
+
+            //obtenemos los valores de los inputs
+            const title = document.getElementById("note-title").value;
+            const content = document.getElementById("note-content").value;
+
+            //obtenemos el token que se almaceno en local storage
+
+            const token = localStorage.getItem("token");
+            if (!token){
+                alert("No tienes permiso para crear notas. Inicia sesión primero.");
+                window.location.href = "Inicio_de_sesion.html";
+                return;
+            }
+
+            try {
+                //envia los datos al backend
+                const response = await fetch ("http://localhost:5000/api/tasks", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                         "Authorization": `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({title, content})
+                });
+
+                const data = await response.json();
+
+                if(response.ok){
+                    alert("Task guardada con éxito.");
+                    window.location.href = "Inicio.html";
+                }else{
+                    alert("Error: " + data.error);
+                }
+            }catch(error){
+                console.error("Error en la solicitud:", error);
+                alert("Error al conectar con el servidor.");
+            }
+
+        });
+
+        //funcion para cerrar sesion activa
+        document.getElementById("logoutButton").addEventListener("click", function() {
+            localStorage.removeItem("token"); //elimina el token del almacenamiento local
+        
+        });
+    </script>
+</body>
+</html>

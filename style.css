@@ -1,0 +1,501 @@
+@charset "utf-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    position: relative;
+}
+
+/* Header con el botón de Iniciar Sesión */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 20px; /* Ajusta el padding para dar más espacio */
+    background-color: #fff;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.login-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 40px; /* Aumentamos el margen derecho */
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Contenedor principal */
+.container {
+    display: flex;
+    background-color: transparent; /* Fondo transparente */
+    border-radius: 8px;
+    overflow: hidden;
+    width: 90%;
+    max-width: 800px;
+    margin-top: 40px;
+}
+
+/* Contenedor de la imagen */
+.image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover; /* Ajusta la imagen al tamaño del contenedor */
+}
+
+/* Contenedor del formulario */
+.form-container {
+    flex: 1;
+    padding: 40px;
+    background-color: #fff; /* Fondo blanco para el formulario */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px 3px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .image-container {
+        order: 1;
+    }
+
+    .form-container {
+        order: 2;
+        padding: 20px;
+    }
+
+    header {
+        padding: 10px;
+    }
+
+    .login-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    footer {
+        position: static;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container h2 {
+        font-size: 20px;
+    }
+
+    .form-container input {
+        font-size: 14px;
+    }
+
+    .form-container button {
+        font-size: 14px;
+    }
+
+    .form-container .remember-me label {
+        font-size: 12px;
+    }
+}
+
+/* INSTRUCCIONES FORMULARIO REGISTRO */
+
+.form-instructions {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-container label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.field-instruction {
+    font-size: 12px;
+    color: #777;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}l
+
+/* PAGINA HOME O INICIO */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-actions button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.user-actions button:hover {
+    background-color: #0056b3;
+}
+
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.notes-section, .completed-section {
+    margin-bottom: 5%;
+    top: 90px;
+    left: 20px;
+}
+
+.note {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.note h4 {
+    margin: 0 0 10px;
+}
+
+.note p {
+    margin: 0 0 10px;
+}
+
+.note-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.note-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #fff;
+    margin-top: 20px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el formulario de creación de notas */
+#note-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#note-form label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#note-form input,
+#note-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    padding: 10px 3px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#note-form textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+#note-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#note-form button:hover {
+    background-color: #0056b3;
+}
+
+
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.greeting {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    font-size: 1.2em;
+}
+
+
+/* Estilo para el contenedor de cada tarea */
+.note-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  /* Estilo para el título */
+  .note-item h4 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0 0 10px 0;
+  }
+  
+  /* Estilo para el contenido */
+  .note-item p {
+    font-size: 1rem;
+    color: #555;
+    margin: 0 0 15px 0;
+  }
+  
+
+  .note-item #btn-completed {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+.note-item  #btn-completed:hover {
+    background-color: #0056b3;
+}
+
+/*boton editar*/
+.note-item #btn-edit {
+    background-color: #F0A214;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+.note-item  #btn-edit:hover {
+    background-color: #98670C;
+}
+
+/*boton eliminar*/
+.note-item #btn-delete {
+    background-color: #D73925;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+.note-item  #btn-delete:hover {
+    background-color: #9C2A1B;
+}
+
+
+  /* Estilos para el formulario de edición */
+.form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 7%;
+}
+
+.form-container h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.form-container label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.form-container input,
+.form-container textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-container textarea {
+    resize: vertical;
+    height: 150px;
+    resize: none;
+}
+
+.form-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
+
+.form-container button.cancel {
+    background-color: #f44336;
+}
+
+.form-container button.cancel:hover {
+    background-color: #e53935;
+}
